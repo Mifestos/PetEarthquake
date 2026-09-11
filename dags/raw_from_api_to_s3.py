@@ -4,8 +4,8 @@ import duckdb
 import pendulum
 from airflow import DAG
 from airflow.models import Variable
-from airflow.providers.standard.operators.empty import EmptyOperator
-from airflow.providers.standard.operators.python import PythonOperator
+from airflow.operators.empty import EmptyOperator
+from airflow.operators.python import PythonOperator
 
 OWNER = "Mifestos"
 DAG_ID = "raw_from_api_to_s3"
