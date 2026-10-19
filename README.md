@@ -35,10 +35,10 @@ Pet-проект по Data Engineering, в котором собран полн�
 Такое разделение позволяет пересчитывать витрины без повторного обращения к внешнему API и упрощает отладку: всегда видно, на каком слое произошла ошибка.
 
 **Схема конвейера:**
-
 Внешний API ──▶ S3 / MinIO ──▶ PostgreSQL ──▶ Data Marts ──▶ Metabase
 (Raw Layer) (ODS Layer) (витрины) (BI)
 
+text
 
 Оркестрация всего пайплайна — Apache Airflow.
 
@@ -60,7 +60,6 @@ DAG-и проекта:
 ---
 
 ## Схема взаимодействия компонентов
-
 Airflow (webserver + scheduler)
 
 ├── DAG: raw_from_api_to_s3 ──▶ S3 / MinIO (Raw)
@@ -70,6 +69,7 @@ Airflow (webserver + scheduler)
 
 PostgreSQL ──▶ Metabase (дашборды)
 
+text
 
 - **Airflow** — оркестрация задач и управление зависимостями.
 - **S3 / MinIO** — объектное хранилище для сырых данных.
@@ -129,11 +129,9 @@ source .venv/bin/activate        # Linux/macOS
 # .venv\Scripts\Activate.ps1     # Windows
 
 pip install -r requirements.txt
-
 2. Старт контейнеров
-
+bash
 docker-compose up -d --build
-
 Адреса запущенных сервисов
 Компонент	URL
 Apache Airflow	http://localhost:8080
@@ -147,7 +145,7 @@ ods_pg	Подключение к PostgreSQL
 После настройки DAG-и готовы к запуску.
 
 Структура репозитория
-
+text
 PetEarthquake/
 ├── config/                              # Конфигурационные файлы
 ├── dags/
@@ -163,7 +161,6 @@ PetEarthquake/
 ├── docker-compose.yaml                  # Локальное развёртывание инфраструктуры
 ├── cred.py                              # Управление секретами (локально)
 └── requirements.txt                     # Зависимости Python-окружения
-
 Инженерные заметки
 Слоистость хранилища снижает связанность: изменение логики витрины не затрагивает Raw-слой, а повторный расчёт метрик не требует обращения к внешнему API.
 
