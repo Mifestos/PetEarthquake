@@ -35,10 +35,8 @@ Pet-проект по Data Engineering, в котором собран полн�
 Такое разделение позволяет пересчитывать витрины без повторного обращения к внешнему API и упрощает отладку: всегда видно, на каком слое произошла ошибка.
 
 **Схема конвейера:**
-Внешний API ──▶ S3 / MinIO ──▶ PostgreSQL ──▶ Data Marts ──▶ Metabase
+Внешний API -> S3 / MinIO -> PostgreSQL -> Data Marts -> Metabase
 (Raw Layer) (ODS Layer) (витрины) (BI)
-
-text
 
 Оркестрация всего пайплайна — Apache Airflow.
 
@@ -48,8 +46,8 @@ text
 
 DAG-и проекта:
 
-- `raw_from_api_to_s3.py` — API → S3 (Raw Layer)
-- `raw_from_s3_to_pg.py` — S3 → PostgreSQL (ODS)
+- `raw_from_api_to_s3.py` — API -> S3 (Raw Layer)
+- `raw_from_s3_to_pg.py` — S3 -> PostgreSQL (ODS)
 - `fct_avg_day_earthquake.py` — витрина со средней магнитудой за день
 - `fct_count_day_earthquake.py` — витрина с количеством событий за день
 
@@ -62,14 +60,12 @@ DAG-и проекта:
 ## Схема взаимодействия компонентов
 Airflow (webserver + scheduler)
 
-├── DAG: raw_from_api_to_s3 ──▶ S3 / MinIO (Raw)
-├── DAG: raw_from_s3_to_pg ──▶ PostgreSQL (ODS)
-├── DAG: fct_avg_day_earthquake ──▶ витрина
-└── DAG: fct_count_day_earthquake ──▶ витрина
+├── DAG: raw_from_api_to_s3 -> S3 / MinIO (Raw)
+├── DAG: raw_from_s3_to_pg -> PostgreSQL (ODS)
+├── DAG: fct_avg_day_earthquake -> витрина
+└── DAG: fct_count_day_earthquake -> витрина
 
-PostgreSQL ──▶ Metabase (дашборды)
-
-text
+PostgreSQL -> Metabase (дашборды)
 
 - **Airflow** — оркестрация задач и управление зависимостями.
 - **S3 / MinIO** — объектное хранилище для сырых данных.
@@ -118,26 +114,26 @@ text
 
 Для запуска проекта достаточно установленного Docker и Docker Compose.
 
-### 1. Подготовка окружения
+### Клонирование репозитория
 
 ```bash
 git clone https://github.com/Mifestos/PetEarthquake.git
 cd PetEarthquake
-
+Создание виртуального окружения
 python -m venv .venv
+Активация виртуального окружения
 source .venv/bin/activate        # Linux/macOS
 # .venv\Scripts\Activate.ps1     # Windows
-
+Установка зависимостей
 pip install -r requirements.txt
-2. Старт контейнеров
-bash
+Запуск контейнеров
 docker-compose up -d --build
-Адреса запущенных сервисов
+Проверка доступности сервисов
 Компонент	URL
 Apache Airflow	http://localhost:8080
 Metabase	http://localhost:3000
-3. Настройка Connections в Airflow
-В веб-интерфейсе (Admin → Connections) необходимо настроить:
+Настройка Connections в Airflow
+В веб-интерфейсе (Admin -> Connections) необходимо настроить:
 
 Conn ID	Назначение
 aws_default / s3_conn	Доступ к S3-бакету
@@ -145,12 +141,11 @@ ods_pg	Подключение к PostgreSQL
 После настройки DAG-и готовы к запуску.
 
 Структура репозитория
-text
 PetEarthquake/
 ├── config/                              # Конфигурационные файлы
 ├── dags/
-│   ├── raw_from_api_to_s3.py            # API → S3 (Raw Layer)
-│   ├── raw_from_s3_to_pg.py             # S3 → PostgreSQL (ODS)
+│   ├── raw_from_api_to_s3.py            # API -> S3 (Raw Layer)
+│   ├── raw_from_s3_to_pg.py             # S3 -> PostgreSQL (ODS)
 │   ├── fct_avg_day_earthquake.py        # Витрина: средняя магнитуда за день
 │   └── fct_count_day_earthquake.py      # Витрина: количество событий за день
 ├── data/                                # Тестовые данные / кэш
@@ -179,5 +174,3 @@ CI/CD (GitHub Actions) для линта и деплоя DAG-ов
 
 Лицензия: MIT
 Автор: Mifestos
-
-text
