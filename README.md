@@ -58,6 +58,7 @@ DAG-и проекта:
 ---
 
 ## Схема взаимодействия компонентов
+```text
 Airflow (webserver + scheduler)
 
 ├── DAG: raw_from_api_to_s3 -> S3 / MinIO (Raw)
@@ -71,7 +72,7 @@ PostgreSQL -> Metabase (дашборды)
 - **S3 / MinIO** — объектное хранилище для сырых данных.
 - **PostgreSQL** — ODS-слой и витрины.
 - **Metabase** — BI-дашборды поверх витрин.
-
+```
 ---
 
 ## Стек
