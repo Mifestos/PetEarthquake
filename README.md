@@ -119,28 +119,41 @@ PostgreSQL -> Metabase (дашборды)
 ```bash
 git clone https://github.com/Mifestos/PetEarthquake.git
 cd PetEarthquake
-Создание виртуального окружения
+```
+### Создание виртуального окружения
+```bash
 python -m venv .venv
-Активация виртуального окружения
+```
+### Активация виртуального окружения
+```bash
 source .venv/bin/activate        # Linux/macOS
-# .venv\Scripts\Activate.ps1     # Windows
-Установка зависимостей
+ .venv\Scripts\Activate.ps1     # Windows
+```
+### Установка зависимостей
+```bash
 pip install -r requirements.txt
-Запуск контейнеров
+```
+### Запуск контейнеров
+```bash
 docker-compose up -d --build
-Проверка доступности сервисов
+```
+### Проверка доступности сервисов
 Компонент	URL
+```text
 Apache Airflow	http://localhost:8080
 Metabase	http://localhost:3000
-Настройка Connections в Airflow
-В веб-интерфейсе (Admin -> Connections) необходимо настроить:
+```
+# Настройка Connections в Airflow
+### В веб-интерфейсе (Admin -> Connections) необходимо настроить:
 
-Conn ID	Назначение
+### Conn ID	Назначение
+```text
 aws_default / s3_conn	Доступ к S3-бакету
 ods_pg	Подключение к PostgreSQL
 После настройки DAG-и готовы к запуску.
-
-Структура репозитория
+```
+# Структура репозитория
+```text
 PetEarthquake/
 ├── config/                              # Конфигурационные файлы
 ├── dags/
@@ -156,14 +169,15 @@ PetEarthquake/
 ├── docker-compose.yaml                  # Локальное развёртывание инфраструктуры
 ├── cred.py                              # Управление секретами (локально)
 └── requirements.txt                     # Зависимости Python-окружения
-Инженерные заметки
+```
+# Инженерные заметки
 Слоистость хранилища снижает связанность: изменение логики витрины не затрагивает Raw-слой, а повторный расчёт метрик не требует обращения к внешнему API.
 
 Секреты отделены от кода: доступы к S3 и PostgreSQL хранятся в Connections Airflow, а не в репозитории.
 
 Воспроизводимость окружения: весь стек поднимается из docker-compose.yaml, что исключает расхождения между машинами разработчиков.
 
-Roadmap
+# Roadmap
 Добавление тестов данных (Great Expectations / dbt tests)
 
 Переход на dbt для трансформаций Mart-слоя
@@ -172,5 +186,5 @@ CI/CD (GitHub Actions) для линта и деплоя DAG-ов
 
 Мониторинг и алертинг пайплайна
 
-Лицензия: MIT
-Автор: Mifestos
+# Лицензия: MIT
+# Автор: Mifestos
