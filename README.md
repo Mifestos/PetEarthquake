@@ -179,3 +179,5 @@ CI/CD (GitHub Actions) для линта и деплоя DAG-ов
 
 Лицензия: MIT
 Автор: Mifestos
+
+text
